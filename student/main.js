@@ -29,23 +29,22 @@ var sha3_256 = require('js-sha3').sha3_256;
 // 註冊 body-parser 處理 body stream
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
-	extended: true
+    extended: true
 }))
 
 app.get('/account', (req, res) => {
-	var account = req.query.a
-	eth.getBalance(account, (err, ethBalance) => {
-		var output;
-		if(!err) {
-			// output = ethBalance;
-			res.json(ethBalance);
-		}
-		else {
-			// output = err;
-			res.status(500).json(err)
-		}
-		// res.send('')
-	})
+    var account = req.query.a
+    eth.getBalance(account, (err, ethBalance) => {
+        var output;
+        if (!err) {
+            // output = ethBalance;
+            res.json(ethBalance);
+        } else {
+            // output = err;
+            res.status(500).json(err)
+        }
+        // res.send('')
+    })
 });
 
 app.get('/addVideo', (req, res) => {
@@ -54,17 +53,16 @@ app.get('/addVideo', (req, res) => {
         from: eth.accounts[0],
         gas: 100000
     }, (err, txhash) => {
-        if(!err) {
+        if (!err) {
             res.json({
                 txhash: txhash
             })
-        }
-        else {
+        } else {
             res.json({
                 err: err
             })
         }
-    }) 
+    })
 })
 
 app.get('/showAllVideos', (req, res) => {
@@ -90,13 +88,12 @@ app.get('/addCertificates', (req, res) => {
         from: account,
         gas: 2000000
     }, (err, txhash) => {
-        if(!err) {
+        if (!err) {
             console.log("done")
             res.json({
                 txhash: txhash
             })
-        }
-        else {
+        } else {
             res.json({
                 err: errs
             })
@@ -111,12 +108,11 @@ app.get('/deleteCertificates', (req, res) => {
         from: account,
         gas: 200000
     }, (err, txhash) => {
-        if(!err) {
+        if (!err) {
             res.json({
                 txhash: txhash
             })
-        }
-        else {
+        } else {
             res.json({
                 err: err
             })
@@ -124,8 +120,38 @@ app.get('/deleteCertificates', (req, res) => {
     })
 })
 
+app.get('/showAllCer', (req, res) => {
+    var result = student.showAllCer()
+    res.json({
+        result: result
+    })
+})
 
+app.get('/changeStudent', (req, res) => {
+    var account = eth.accounts[0]
+    var student = req.query.student
+    student.changeStudent(student, {
+        from: account,
+        gas: 2000000
+    }, (err, txhash) {
+        if (!err) {
+            res.json({
+                txhash: txhash
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
 
+app.get('/showStudent', (req, res) => {
+    var result = student.showStudent()
+    res.json({
+        result: result
+    })
+})
 
 // app.get('/shatest', (req, res) => {
 //     res.json({

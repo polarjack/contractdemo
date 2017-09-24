@@ -57,7 +57,7 @@ contract Student {
         StudentChange(previous, input, msg.sender);
     }
     //show the target user
-    function showStudnet() constant returns(address) {
+    function showStudent() constant returns(address) {
         return student;
     }
 

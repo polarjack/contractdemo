@@ -18,9 +18,10 @@ const contract_bytecode = '0x' + fs.readFileSync(contractName + '.bin').toString
 let MyContract = web3.eth.contract(contract_abi);
 
 var searchAddr = '';
+var Account = "0x642d20ef8aa11c4a75d8104c394e14fb271213bb"
 
 var deploy =
-    MyContract.new(web3.eth.coinbase, {
+    MyContract.new(studentAccount, {
         from: web3.eth.coinbase,
         data: contract_bytecode,
         gas: gasEstimate
