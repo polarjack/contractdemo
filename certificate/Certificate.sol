@@ -81,7 +81,7 @@ contract Certificate {
         return max_length + 1;
     }
 
-    function confirmCount() returns (bool){
+    function confirmCount() returns (bool) {
         uint count = 0;
         for (uint index; index < max_length; index++) {
             if (videos[index].status == Status.Confirmed) {
@@ -101,6 +101,9 @@ contract Certificate {
             return false;
         }
         return true;
+    }
+    function getConfirmed() constant returns (bool) {
+        return if_confirmed;
     }
     
     address public creator;

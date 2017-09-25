@@ -52,6 +52,9 @@ app.get('/addVideo', (req, res) => {
     var account = eth.accounts[0]
     var message = req.query.message
     var videoId = req.query.videoId
+    // console.log(message)
+    // console.log(videoId)
+    // res.json("done")
     certificate.addVideo(videoId, message, {
         from: account,
         gas: 200000
@@ -141,6 +144,14 @@ app.get('/findVideo', (req, res) => {
                 err: err
             })
         }
+    })
+})
+
+app.get('/getConfirmed', (req, res) => {
+    var account = eth.accounts[0]
+    var result = certificate.getConfirmed()
+    res.json({
+        status: result
     })
 })
 
