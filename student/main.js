@@ -154,7 +154,7 @@ app.get('/showAllCer', (req, res) => {
     })
 })
 
-//error
+//error unsolve
 // app.get('/changeStudent', (req, res) => {
 //     var account = eth.accounts[0]
 //     var student = req.query.student
