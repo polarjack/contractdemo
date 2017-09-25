@@ -51,14 +51,18 @@ contract Student {
         return savingCertificates;
     }
     //important function
-    function changeStudent(address input) onlyOwner {
-        previous = student;
-        student = input;
-        StudentChange(previous, input, msg.sender);
-    }
+    // function changingStudent(address input) {
+    //     previous = student;
+    //     student = input;
+    //     StudentChange(previous, input, msg.sender);
+    // }
     //show the target user
     function showStudent() constant returns(address) {
         return student;
+    }
+
+    function showCreator() constant returns(address) {
+        return creator;
     }
 
     address public creator = 0x0;

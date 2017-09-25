@@ -32,21 +32,23 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
-app.get('/account', (req, res) => {
-    var account = req.query.a
-    eth.getBalance(account, (err, ethBalance) => {
-        var output;
-        if (!err) {
-            // output = ethBalance;
-            res.json(ethBalance);
-        } else {
-            // output = err;
-            res.status(500).json(err)
-        }
-        // res.send('')
-    })
-});
+//fortest
+// app.get('/account', (req, res) => {
+//     var account = req.query.a
+//     eth.getBalance(account, (err, ethBalance) => {
+//         var output;
+//         if (!err) {
+//             // output = ethBalance;
+//             res.json(ethBalance);
+//         } else {
+//             // output = err;
+//             res.status(500).json(err)
+//         }
+//         // res.send('')
+//     })
+// });
 
+//done
 app.get('/addVideo', (req, res) => {
     var message = req.query.message;
     student.addVideo(sha3_256(message), {
@@ -65,6 +67,26 @@ app.get('/addVideo', (req, res) => {
     })
 })
 
+//done
+app.get('/deleteVideo', (req, res) => {
+    var message = req.query.message;
+    student.deleteVideo(sha3_256(message), {
+        from: eth.accounts[0],
+        gas: 100000
+    }, (err, txhash) => {
+        if (!err) {
+            res.json({
+                txhash: txhash
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
+
+//done
 app.get('/showAllVideos', (req, res) => {
     var result = student.showAllVideos()
     res.json({
@@ -72,15 +94,18 @@ app.get('/showAllVideos', (req, res) => {
     })
 })
 
+//done
 app.get('/ifInside', (req, res) => {
-    var video = req.query.video
+    var message = req.query.message
     var account = eth.accounts[0]
-    var result = student.ifInside(sha3_256(video))
+    var result = student.ifInside(sha3_256(message))
     res.json({
         result: result
     })
 })
 
+
+//done
 app.get('/addCertificates', (req, res) => {
     var cer = req.query.cer
     var account = eth.accounts[0]
@@ -101,6 +126,7 @@ app.get('/addCertificates', (req, res) => {
     })
 })
 
+//done
 app.get('/deleteCertificates', (req, res) => {
     var account = eth.accounts[0];
     var cer = req.query.cer
@@ -120,6 +146,7 @@ app.get('/deleteCertificates', (req, res) => {
     })
 })
 
+//done
 app.get('/showAllCer', (req, res) => {
     var result = student.showAllCer()
     res.json({
@@ -127,27 +154,37 @@ app.get('/showAllCer', (req, res) => {
     })
 })
 
-app.get('/changeStudent', (req, res) => {
-    var account = eth.accounts[0]
-    var student = req.query.student
-    student.changeStudent(student, {
-        from: account,
-        gas: 2000000
-    }, (err, txhash) {
-        if (!err) {
-            res.json({
-                txhash: txhash
-            })
-        } else {
-            res.json({
-                err: err
-            })
-        }
+//error
+// app.get('/changeStudent', (req, res) => {
+//     var account = eth.accounts[0]
+//     var student = req.query.student
+//     student.changingStudent(student, {
+//         from: account,
+//         gas: 2000000
+//     }, (err, txhash) => {
+//         if (!err) {
+//             res.json({
+//                 txhash: txhash
+//             })
+//         } else {
+//             res.json({
+//                 err: err
+//             })
+//         }
+//     })
+// })
+
+//done
+app.get('/showStudent', (req, res) => {
+    var result = student.showStudent()
+    res.json({
+        result: result
     })
 })
 
-app.get('/showStudent', (req, res) => {
-    var result = student.showStudent()
+//done
+app.get('/showCreator', (req, res) => {
+    var result = student.showCreator()
     res.json({
         result: result
     })
