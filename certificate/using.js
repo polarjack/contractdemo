@@ -14,6 +14,6 @@ const web3 = new Web3(new Web3.providers.HttpProvider(provider))
 const contract_abi = JSON.parse(fs.readFileSync(contractName + '.json'))
 const contract_bytecode = '0x' + fs.readFileSync(contractName + '.bin').toString()
 
-var done = web3.eth.contract(contract_abi).at("0x6815373ca9b7abacd58506ef3469780368cc75a8");
+var done = web3.eth.contract(contract_abi).at("0xb105d4219b7bc90d154532afea7f3c8fa9b7a3ed");
 
 module.exports = done

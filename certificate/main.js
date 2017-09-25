@@ -22,7 +22,7 @@ var bodyParser = require('body-parser')
 // app.use(express.static(path.resolve(__dirname, 'static')))
 
 // var deploy = require('./deployDemo.js')
-var student = require('./using.js');
+var certificate = require('./using.js');
 
 var sha3_256 = require('js-sha3').sha3_256;
 
@@ -48,6 +48,100 @@ app.use(bodyParser.urlencoded({
 //     })
 // });
 
+app.get('/addVideo', (req, res) => {
+    var account = eth.accounts[0]
+    var message = req.query.message
+    var videoId = req.query.videoId
+    certificate.addVideo(videoId, message, {
+        from: account,
+        gas: 200000
+    }, (err, txhash) => {
+        if (!err) {
+            res.json({
+                txhash: txhash
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
 
+app.get('/deleteVideo', (req, res) => {
+    var account = eth.accounts[0]
+    var videoId = req.query.videoId
+    certificate.deleteVideo(videoId, {
+        from: account,
+        gas: 200000
+    }, (err, txhash) => {
+        if (!err) {
+            res.json({
+                txhash: txhash
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
+
+app.get('/confirmVideo', (req, res) => {
+    var account = eth.accounts[0]
+    var videoId = req.query.videoId
+    certificate.confirmVideo(videoId, {
+        from: account,
+        gas: 200000
+    }, (err, txhash) => {
+        if (!err) {
+            res.json({
+                txhash: txhash
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
+
+app.get('/failedVideo', (req, res) => {
+    var account = eth.accounts[0]
+    var videoId = req.query.videoId
+    certificate.failedVideo(videoId, {
+        from: account,
+        gas: 200000
+    }, (err, txhash) => {
+        if (!err) {
+            res.json({
+                txhash: txhash
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
+
+app.get('/findVideo', (req, res) => {
+    var account = eth.accounts[0]
+    var videoId = req.query.videoId
+    certificate.findVideo(videoId, {
+        from: account,
+        gas: 200000
+    }, (err, txhash) => {
+        if (!err) {
+            res.json({
+                txhash: txhash
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
 
 app.listen(3000)
