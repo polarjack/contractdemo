@@ -3,7 +3,7 @@
     "chainId": 15
   },
   "difficulty": "20000",
-  "gasLimit": "2100000",
+  "gasLimit": "20000000",
   "alloc": {
     "0x51dfc21a2f125a9eea020d6778df4b6974f1ba3c" : { "balance": "300000000000000000"}
   }
