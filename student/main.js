@@ -2,7 +2,7 @@
 var path = require('path')
 
 // import 同目錄的 eventEmitter.js
-// var eventEmitter = require('./eventEmitter.js')
+var eventEmitter = require('./eventEmitter.js')
 
 // import 同目錄的 web3.js
 var web3 = require('./web3.js')
@@ -34,12 +34,12 @@ app.use(bodyParser.urlencoded({
 
 //fortest
 // app.get('/account', (req, res) => {
-//     var account = req.query.a
+//     const account = eth.accounts[0]
 //     eth.getBalance(account, (err, ethBalance) => {
 //         var output;
 //         if (!err) {
 //             // output = ethBalance;
-//             res.json(ethBalance);
+//             res.json(web3.fromWei(ethBalance, 'ether'));
 //         } else {
 //             // output = err;
 //             res.status(500).json(err)
@@ -50,14 +50,15 @@ app.use(bodyParser.urlencoded({
 
 //done
 app.get('/addVideo', (req, res) => {
-    var message = req.query.message;
+    const message = req.query.message;
     student.addVideo(sha3_256(message), {
         from: eth.accounts[0],
         gas: 100000
     }, (err, txhash) => {
         if (!err) {
-            res.json({
-                txhash: txhash
+            eventEmitter.once('VideoChange:', function(eventPayload) {
+                eventPayload['txhash'] = txhash
+                res.json(eventPayload)
             })
         } else {
             res.json({
@@ -69,14 +70,15 @@ app.get('/addVideo', (req, res) => {
 
 //done
 app.get('/deleteVideo', (req, res) => {
-    var message = req.query.message;
+    const message = req.query.message;
     student.deleteVideo(sha3_256(message), {
         from: eth.accounts[0],
         gas: 100000
     }, (err, txhash) => {
         if (!err) {
-            res.json({
-                txhash: txhash
+            eventEmitter.once('VideoChange:', function(eventPayload) {
+                eventPayload['txhash'] = txhash
+                res.json(eventPayload)
             })
         } else {
             res.json({
@@ -88,7 +90,7 @@ app.get('/deleteVideo', (req, res) => {
 
 //done
 app.get('/showAllVideos', (req, res) => {
-    var result = student.showAllVideos()
+    const result = student.showAllVideos()
     res.json({
         result: result
     })
@@ -96,9 +98,9 @@ app.get('/showAllVideos', (req, res) => {
 
 //done
 app.get('/ifInside', (req, res) => {
-    var message = req.query.message
-    var account = eth.accounts[0]
-    var result = student.ifInside(sha3_256(message))
+    const message = req.query.message
+    const account = eth.accounts[0]
+    const result = student.ifInside(sha3_256(message))
     res.json({
         result: result
     })
@@ -107,16 +109,16 @@ app.get('/ifInside', (req, res) => {
 
 //done
 app.get('/addCertificates', (req, res) => {
-    var cer = req.query.cer
-    var account = eth.accounts[0]
+    const cer = req.query.cer
+    const account = eth.accounts[0]
     student.addCertificates(cer, {
         from: account,
         gas: 2000000
     }, (err, txhash) => {
         if (!err) {
-            console.log("done")
-            res.json({
-                txhash: txhash
+            eventEmitter.once('CertificateChange:', function(eventPayload) {
+                eventPayload['txhash'] = txhash
+                res.json(eventPayload)
             })
         } else {
             res.json({
@@ -128,15 +130,16 @@ app.get('/addCertificates', (req, res) => {
 
 //done
 app.get('/deleteCertificates', (req, res) => {
-    var account = eth.accounts[0];
-    var cer = req.query.cer
+    const account = eth.accounts[0];
+    const cer = req.query.cer
     student.deleteCertificates(cer, {
         from: account,
         gas: 200000
     }, (err, txhash) => {
         if (!err) {
-            res.json({
-                txhash: txhash
+            eventEmitter.once('CertificateChange:', function(eventPayload) {
+                eventPayload['txhash'] = txhash
+                res.json(eventPayload)
             })
         } else {
             res.json({
@@ -155,28 +158,28 @@ app.get('/showAllCer', (req, res) => {
 })
 
 //error unsolve
-// app.get('/changeStudent', (req, res) => {
-//     var account = eth.accounts[0]
-//     var student = req.query.student
-//     student.changingStudent(student, {
-//         from: account,
-//         gas: 2000000
-//     }, (err, txhash) => {
-//         if (!err) {
-//             res.json({
-//                 txhash: txhash
-//             })
-//         } else {
-//             res.json({
-//                 err: err
-//             })
-//         }
-//     })
-// })
+app.get('/changeStudent', (req, res) => {
+    const _toChange = req.query.student
+    student.changeStudent(_toChange, {
+        from: eth.accounts[0],
+        gas: 100000
+    }, (err, txhash) => {
+        if (!err) {
+            eventEmitter.once('StudentChange:', function(eventPayload) {
+                eventPayload['txhash'] = txhash
+                res.json(eventPayload)
+            })
+        } else {
+            res.json({
+                err: err
+            })
+        }
+    })
+})
 
 //done
 app.get('/showStudent', (req, res) => {
-    var result = student.showStudent()
+    const result = student.showStudent()
     res.json({
         result: result
     })
@@ -184,7 +187,7 @@ app.get('/showStudent', (req, res) => {
 
 //done
 app.get('/showCreator', (req, res) => {
-    var result = student.showCreator()
+    const result = student.showCreator()
     res.json({
         result: result
     })
