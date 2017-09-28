@@ -51,26 +51,29 @@ app.get('/account', (req, res) => {
 app.get('/changeuser', (req, res) => {
     var _new = eth.accounts[2]
     var account = eth.accounts[0]
+    
     eventTest.changeOwner(_new, {
         from: account,
         gas: 2000000
     }, (err, txhash) => {
         if(!err) {
-            // eventEmitter.once('StudentChange:' + account, function(eventPayload) {
-            //     eventPayload['txhash'] = txhash
-            //     res.json(eventPayload)
-            // })
-            res.json({
-                status: "success", 
-                txhash: txhash
+            console.log(txhash)
+            eventEmitter.once('StudentChange:', function(eventPayload) {
+                console.log(eventPayload);
+                eventPayload['txhash'] = txhash
+                res.json(eventPayload)
             })
+            // res.json({
+            //     status: "success", 
+            //     txhash: txhash
+            // })
         } else {
             cosole.log(err)
             res.status(500).json(err)
         }
     })
-
 })
+
 
 
 app.listen(3000)
